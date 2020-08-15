@@ -1,0 +1,32 @@
+{
+  "port": 8046,
+
+  "apiTokens": [
+    "topsecrettoken"
+  ],
+
+  "remotes": {
+    "exampleRemote": {
+      "hostname": "hostname",
+      "port": 22,
+      "username": "username",
+      "password": "password"
+    }
+  },
+
+  "projects": {
+    "ExampleProject": {
+      "githubRepository": "ExampleUser/ExampleRepository",
+      "githubToken": null,
+
+      "deployments": {
+        "ExampleDeployment": {
+          "enabled": false,
+          "remote": "exampleRemote",
+          "path": "/home/server",
+          "commands": []
+        }
+      }
+    }
+  }
+}
