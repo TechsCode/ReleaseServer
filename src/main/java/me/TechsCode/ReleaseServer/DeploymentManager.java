@@ -18,10 +18,10 @@ public abstract class DeploymentManager extends Thread {
 
     public static JSch jsch = new JSch();
 
-    private List<String> previousArtifacts;
+    private List<Integer> previousReleases;
 
     public DeploymentManager() {
-        this.previousArtifacts = new ArrayList<>();
+        this.previousReleases = new ArrayList<>();
 
         start();
     }
@@ -33,11 +33,9 @@ public abstract class DeploymentManager extends Thread {
         while (true){
             List<Artifact> artifacts = getArtifacts();
 
-            if(!previousArtifacts.isEmpty()){
-                artifacts.stream().filter(artifact -> !previousArtifacts.contains(artifact.getReleaseTag()))
+            if(!previousReleases.isEmpty()){
+                artifacts.stream().filter(artifact -> !previousReleases.contains(artifact.getRelease().getId()))
                         .forEach(artifact -> {
-                            System.out.println("New Artifact found");
-
                             Project project = artifact.getRelease().getProject();
 
                             if(artifact.getAssets().length == 0){
@@ -45,13 +43,13 @@ public abstract class DeploymentManager extends Thread {
                                 return;
                             }
 
-                            for(Deployment deployment : project.getDeployments()){
-                                if(!deployment.isEnabled()) continue;
+                            for (Deployment deployment : project.getDeployments()) {
+                                if (!deployment.isEnabled()) continue;
 
                                 Remote remote = deployment.getRemote();
 
                                 try {
-                                    java.util.Properties config = new java.util.Properties();
+                                    Properties config = new Properties();
                                     config.put("StrictHostKeyChecking", "no");
 
                                     Session session = jsch.getSession(remote.getUsername(), remote.getHostname(), remote.getPort());
@@ -63,13 +61,13 @@ public abstract class DeploymentManager extends Thread {
                                     sftp.connect();
                                     sftp.cd(deployment.getPath());
 
-                                    for(File asset : artifact.getAssets()){
+                                    for (File asset : artifact.getAssets()) {
                                         sftp.put(new FileInputStream(asset), asset.getName(), ChannelSftp.OVERWRITE);
                                     }
 
                                     sftp.exit();
 
-                                    for(String command : deployment.getCommands()){
+                                    for (String command : deployment.getCommands()) {
                                         ChannelExec channel = (ChannelExec) session.openChannel("exec");
                                         channel.setCommand(command);
                                         channel.connect();
@@ -84,16 +82,16 @@ public abstract class DeploymentManager extends Thread {
                                     }
 
                                     session.disconnect();
-                                    System.out.println("["+project.getName()+"] Deployment of release ["+artifact.getReleaseTag()+"] to remote ["+remote.getHostname()+"] was successful");
+                                    System.out.println("[" + project.getName() + "] Deployment of release [" + artifact.getReleaseTag() + "] to remote [" + remote.getHostname() + "] was successful");
                                 } catch (JSchException | SftpException | IOException e) {
-                                    System.out.println("["+project.getName()+"] Error while deploying release ["+artifact.getReleaseTag()+"] to ["+remote.getHostname()+"]");
+                                    System.out.println("[" + project.getName() + "] Error while deploying release [" + artifact.getReleaseTag() + "] to [" + remote.getHostname() + "]");
                                     System.out.println(e.getMessage());
                                 }
                             }
                         });
             }
 
-            this.previousArtifacts = artifacts.stream().map(Artifact::getReleaseTag).collect(Collectors.toList());
+            this.previousReleases = artifacts.stream().map(a -> a.getRelease().getId()).collect(Collectors.toList());
 
             try {
                 sleep(DELAY);
