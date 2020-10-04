@@ -17,7 +17,7 @@ public class ReleaseServer {
     private static List<Artifact> artifacts;
 
     public static void main(String[] args){
-        Config config = new Config();
+        Config config = Config.getInstance();
 
         SpringApplication app = new SpringApplication(ReleaseServer.class);
         app.setDefaultProperties(Collections.singletonMap("server.port", config.getPort()));
@@ -52,6 +52,9 @@ public class ReleaseServer {
         };
     }
 
+    public static List<Artifact> getArtifacts() {
+        return artifacts;
+    }
 }
 
 
