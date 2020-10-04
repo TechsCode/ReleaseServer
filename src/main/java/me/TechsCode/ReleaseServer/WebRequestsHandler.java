@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,9 +58,9 @@ public class WebRequestsHandler {
 
                 return ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + asset.getName() + "\"")
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(asset.getName(), "UTF-8") + "\"")
                         .body(new UrlResource(asset.getPath()));
-            } catch (MalformedURLException e) {
+            } catch (MalformedURLException | UnsupportedEncodingException e) {
                 e.printStackTrace();
                 return "Error: "+e.getMessage();
             }
