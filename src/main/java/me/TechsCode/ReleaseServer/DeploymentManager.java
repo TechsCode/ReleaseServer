@@ -44,48 +44,8 @@ public abstract class DeploymentManager extends Thread {
                             }
 
                             for (Deployment deployment : project.getDeployments()) {
-                                if (!deployment.isEnabled()) continue;
-
-                                Remote remote = deployment.getRemote();
-
-                                try {
-                                    Properties config = new Properties();
-                                    config.put("StrictHostKeyChecking", "no");
-
-                                    Session session = jsch.getSession(remote.getUsername(), remote.getHostname(), remote.getPort());
-                                    session.setPassword(remote.getPassword());
-                                    session.setConfig(config);
-                                    session.connect();
-
-                                    ChannelSftp sftp = (ChannelSftp) session.openChannel("sftp");
-                                    sftp.connect();
-                                    sftp.cd(deployment.getPath());
-
-                                    for (File asset : artifact.getAssets()) {
-                                        sftp.put(new FileInputStream(asset), asset.getName(), ChannelSftp.OVERWRITE);
-                                    }
-
-                                    sftp.exit();
-
-                                    for (String command : deployment.getCommands()) {
-                                        ChannelExec channel = (ChannelExec) session.openChannel("exec");
-                                        channel.setCommand(command);
-                                        channel.connect();
-
-                                        StringWriter writer = new StringWriter();
-                                        IOUtils.copy(channel.getInputStream(), writer, StandardCharsets.UTF_8);
-                                        String output = writer.toString();
-
-                                        System.out.println(output);
-
-                                        channel.disconnect();
-                                    }
-
-                                    session.disconnect();
-                                    System.out.println("[" + project.getName() + "] Deployment of release [" + artifact.getReleaseTag() + "] to remote [" + remote.getHostname() + "] was successful");
-                                } catch (JSchException | SftpException | IOException e) {
-                                    System.out.println("[" + project.getName() + "] Error while deploying release [" + artifact.getReleaseTag() + "] to [" + remote.getHostname() + "]");
-                                    System.out.println(e.getMessage());
+                                if (deployment.isEnabled()){
+                                    deploy(project, artifact, deployment);
                                 }
                             }
                         });
@@ -98,6 +58,50 @@ public abstract class DeploymentManager extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void deploy(Project project, Artifact artifact, Deployment deployment){
+        Remote remote = deployment.getRemote();
+
+        try {
+            Properties config = new Properties();
+            config.put("StrictHostKeyChecking", "no");
+
+            Session session = jsch.getSession(remote.getUsername(), remote.getHostname(), remote.getPort());
+            session.setPassword(remote.getPassword());
+            session.setConfig(config);
+            session.connect();
+
+            ChannelSftp sftp = (ChannelSftp) session.openChannel("sftp");
+            sftp.connect();
+            sftp.cd(deployment.getPath());
+
+            for (File asset : artifact.getAssets()) {
+                sftp.put(new FileInputStream(asset), asset.getName(), ChannelSftp.OVERWRITE);
+            }
+
+            sftp.exit();
+
+            for (String command : deployment.getCommands()) {
+                ChannelExec channel = (ChannelExec) session.openChannel("exec");
+                channel.setCommand(command);
+                channel.connect();
+
+                StringWriter writer = new StringWriter();
+                IOUtils.copy(channel.getInputStream(), writer, StandardCharsets.UTF_8);
+                String output = writer.toString();
+
+                System.out.println(output);
+
+                channel.disconnect();
+            }
+
+            session.disconnect();
+            System.out.println("[" + project.getName() + "] Deployment of release [" + artifact.getReleaseTag() + "] to remote [" + remote.getHostname() + "] was successful");
+        } catch (JSchException | SftpException | IOException e) {
+            System.out.println("[" + project.getName() + "] Error while deploying release [" + artifact.getReleaseTag() + "] to [" + remote.getHostname() + "]");
+            System.out.println(e.getMessage());
         }
     }
 }
