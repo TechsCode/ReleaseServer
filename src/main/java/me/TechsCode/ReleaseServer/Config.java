@@ -1,8 +1,6 @@
 package me.TechsCode.ReleaseServer;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import me.TechsCode.ReleaseServer.objects.Deployment;
 import me.TechsCode.ReleaseServer.objects.Project;
 import me.TechsCode.ReleaseServer.objects.Remote;
@@ -18,6 +16,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class Config {
 
@@ -52,6 +51,12 @@ public class Config {
         return root.get("port").getAsInt();
     }
 
+    public List<String> getTokens(){
+        return StreamSupport.stream(root.getAsJsonArray("apiTokens").spliterator(), false)
+                .map(JsonElement::getAsString)
+                .collect(Collectors.toList());
+    }
+
     private Map<String, Remote> getRemotes(){
         JsonObject jsonObject = root.getAsJsonObject("remotes");
 
@@ -71,13 +76,12 @@ public class Config {
         return jsonObject.entrySet().stream()
                 .map(deployment -> {
                     JsonObject data_ = (JsonObject) deployment.getValue();
-                    String name_ = deployment.getKey();
                     boolean enabled_ = data_.get("enabled").getAsBoolean();
-                    Remote remote_ = remoteMap.getOrDefault(data_.get("remote").getAsString(), null);
+                    Remote remote_ = remoteMap.getOrDefault(deployment.getKey(), null);
                     String path_ = data_.get("path").getAsString();
                     String[] commands = gson.fromJson(data_.getAsJsonArray("commands"), String[].class);
 
-                    return new Deployment(name_, enabled_, remote_, path_, commands);
+                    return new Deployment(enabled_, remote_, path_, commands);
                 }).collect(Collectors.toList());
     }
 

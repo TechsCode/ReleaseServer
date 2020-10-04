@@ -20,9 +20,8 @@
       "githubToken": null,
 
       "deployments": {
-        "ExampleDeployment": {
+        "exampleRemote": {
           "enabled": false,
-          "remote": "exampleRemote",
           "path": "/home/server",
           "commands": []
         }
