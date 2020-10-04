@@ -59,8 +59,8 @@ public class WebRequestsHandler {
                 return ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + asset.getName() + "\"")
-                        .body(new UrlResource(URLEncoder.encode(asset.getPath(), "UTF-8")));
-            } catch (MalformedURLException | UnsupportedEncodingException e) {
+                        .body(new UrlResource(asset.toURI()));
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
                 return "Error: "+e.getMessage();
             }
