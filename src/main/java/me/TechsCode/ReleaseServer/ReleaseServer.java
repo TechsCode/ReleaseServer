@@ -51,7 +51,7 @@ public class ReleaseServer {
             }
         };
 
-        System.out.println("Listening to new releases...");
+        System.out.println("Listening to new releases for "+config.getProjects().size()+" projects...");
     }
 
     public static List<Artifact> getArtifacts() {
