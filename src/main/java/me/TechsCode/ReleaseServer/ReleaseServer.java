@@ -50,6 +50,8 @@ public class ReleaseServer {
                 return artifacts;
             }
         };
+
+        System.out.println("Listening to new releases...");
     }
 
     public static List<Artifact> getArtifacts() {
