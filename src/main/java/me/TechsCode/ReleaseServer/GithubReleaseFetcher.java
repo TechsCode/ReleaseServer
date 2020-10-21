@@ -12,12 +12,15 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class GithubReleaseFetcher extends Thread {
 
     private static final int FETCH_DELAY = 1000 * 60 * 3;
 
-    private List<Project> projects;
+    private static final Random random = new Random();
+
+    private final List<Project> projects;
 
     public GithubReleaseFetcher(List<Project> projects) {
         this.projects = projects;
@@ -32,8 +35,9 @@ public abstract class GithubReleaseFetcher extends Thread {
 
             for(Project project : projects){
                 try {
-                    String accessTokenParameter = project.getGithubToken().isPresent() ? "?access_token="+project.getGithubToken().get() : "";
-                    String url = "https://api.github.com/repos/"+project.getGithubRepository()+"/releases"+accessTokenParameter;
+                    String randomParameter = "?rnd="+random.nextInt();
+                    String accessTokenParameter = project.getGithubToken().isPresent() ? "&access_token="+project.getGithubToken().get() : "";
+                    String url = "https://api.github.com/repos/"+project.getGithubRepository()+"/releases"+randomParameter+accessTokenParameter;
 
                     JsonArray jsonArray = (JsonArray) JsonParser.parseString(IOUtils.toString(new URL(url), StandardCharsets.UTF_8));
 
