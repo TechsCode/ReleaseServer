@@ -43,6 +43,13 @@ public abstract class DeploymentManager extends Thread {
                                 return;
                             }
 
+                            if(project.getDeployments().isEmpty()){
+                                System.out.println("["+project.getName()+"] No deployments configured for this project");
+                                return;
+                            }
+
+                            System.out.println("["+project.getName()+"] Deploying releases to remotes:");
+
                             for (Deployment deployment : project.getDeployments()) {
                                 if (deployment.isEnabled()){
                                     deploy(project, artifact, deployment);

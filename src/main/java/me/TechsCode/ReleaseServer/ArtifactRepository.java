@@ -40,6 +40,8 @@ public abstract class ArtifactRepository extends Thread {
                     artifacts.add(new Artifact(release, assetFolder));
 
                     if(assetFolder.mkdirs()){
+                        System.out.println("["+release.getProject().getName()+"] Saving release ["+release.getUniqueTag()+"] with "+release.getAssets().size()+" asset(s) to disk");
+
                         for(Asset all : release.getAssets()){
                             try {
                                 Optional<String> githubToken = release.getProject().getGithubToken();
