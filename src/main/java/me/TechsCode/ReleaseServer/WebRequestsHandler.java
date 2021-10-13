@@ -1,5 +1,7 @@
 package me.TechsCode.ReleaseServer;
 
+import com.sun.javafx.scene.text.HitInfo;
+import me.TechsCode.ReleaseServer.github.GitHubUtil;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -41,8 +44,17 @@ public class WebRequestsHandler {
             return "Could not find any artifact for project '"+project+"'";
         }
 
+        if(tag.equals("latest")){
+            String ghToken = "";
+            if(artifactsOfProject.stream().findFirst().get().getRelease().getProject().getGithubToken().isPresent())
+                ghToken = artifactsOfProject.stream().findFirst().get().getRelease().getProject().getGithubToken().get();
+            String repo = artifactsOfProject.stream().findFirst().get().getRelease().getProject().getGithubRepository();
+            tag = Objects.requireNonNull(GitHubUtil.getLatestRelease(ghToken, repo)).getRelease().getTagName();
+        }
+
+        String finalTag = tag;
         Optional<Artifact> artifact = artifactsOfProject.stream()
-                .filter(x -> x.getReleaseTag().equals(tag)).findFirst();
+                .filter(x -> x.getReleaseTag().equals(finalTag)).findFirst();
 
         if(artifact.isPresent()){
             if(artifact.get().getAssets().length == 0){
