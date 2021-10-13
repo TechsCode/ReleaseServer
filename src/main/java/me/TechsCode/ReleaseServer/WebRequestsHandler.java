@@ -1,8 +1,6 @@
 package me.TechsCode.ReleaseServer;
 
-import com.sun.javafx.scene.text.HitInfo;
 import me.TechsCode.ReleaseServer.github.GitHubUtil;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
