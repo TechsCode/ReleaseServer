@@ -1,0 +1,135 @@
+@import "bootstrap.min.css";
+
+html, body{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #1D1F21;
+    width: 100vw;
+    height: 100vh;
+}
+
+h1,h2,h3,h4,h5,h6,p{
+    margin: 0;
+    padding: 0;
+}
+
+.header{
+    width: calc(100% - 40px);
+    height: 100px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+
+    img{
+        height: 100%;
+    }
+}
+
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    color: white;
+    display: flex;
+    justify-content: center;
+
+    a{
+        color: white;
+        text-decoration: underline;
+        text-underline: none;
+    }
+}
+
+.container{
+    width: calc(100% - 40px);
+    height: calc(100% - 180px);
+    padding: 20px;
+}
+
+.image-stack{
+    width: 400px;
+    height: auto;
+    position: relative;
+
+    .browser-img{
+        position: absolute;
+        object-fit: cover;
+        width: 100%;
+    }
+    .inventory-img{
+        width: 80%;
+        position: absolute;
+        object-fit: cover;
+        top: 90px;
+        left: 165px;
+    }
+    img{
+        position: absolute;
+        object-fit: cover;
+    }
+}
+
+.update-info{
+    margin-bottom: 30px;
+    font-size: 22px;
+}
+
+.current-version{
+    font-weight: bold;
+    color: orangered;
+}
+
+.update-to{
+    font-weight: bold;
+    color: #00ab00;
+}
+
+.confirm-text{
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.btn-techscode{
+    background: #9D62D9;
+
+    &:hover{
+        background: #8150b2;
+    }
+}
+
+.updated-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .icon-container{
+        font-size: 250px;
+    }
+    .check-mark{
+        color: #00ab00;
+    }
+    .x-mark{
+        color: #ff0000;
+    }
+
+    .updated-title{
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+    .updated-message{
+        font-size: 30px;
+    }
+
+}
+
+.alert{
+    .alert-title{
+        font-size: 28px;
+        margin-bottom: 5px;
+    }
+    .alert-body{
+        padding: 0 10px;
+    }
+}
