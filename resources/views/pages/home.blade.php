@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
+    <div class="row justify-content-center gap-5">
         <div class="col-auto">
-            <div class="card">
-                <h1>TechsCode Updater</h1>
-                <br>
-                <p>
-                    The TechsCode update server allows you to effortlessly update your plugins.
-                </p>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h1 class="card-title">TechsCode Updater</h1>
+                    <p class="card-text">The TechsCode update server allows you to effortlessly update your plugins.</p>
+                </div>
             </div>
         </div>
         <div class="col-auto">
