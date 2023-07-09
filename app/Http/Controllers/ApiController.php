@@ -17,11 +17,11 @@ class ApiController extends Controller
         $release_title = request()->input('release_title');
         $release_description = request()->input('release_description');
 
-        if (empty($plugin_value_raw) || empty($release_title) || empty($release_description)) {
+        if (empty($plugin_value_raw) || empty($release_title)) {
             return response()->json([
                 'status' => 'error',
                 'code' => 400,
-                'message' => 'Missing required parameters. plugin_name, release_title, release_description are required.'
+                'message' => 'Missing required parameters. plugin_name, release_title are required.'
             ], 400);
         }
 

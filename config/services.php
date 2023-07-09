@@ -40,6 +40,10 @@ return [
         'auth' => [
             'token' => env('TECHSCODE_AUTH_TOKEN'),
         ],
+        'api' => [
+            'github' => env('TECHSCODE_GITHUB_API_TOKEN'),
+            'plugin' => env('TECHSCODE_PLUGIN_API_TOKEN'),
+        ],
         'role_ids' => [
             'verified' => '416174015141642240',
             'patreon' => '795101981051977788',
