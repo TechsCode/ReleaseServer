@@ -64,26 +64,11 @@ class AuthenticateController extends Controller
             $user_roles = $user_info['roles'];
             $support_server_roles = $user_roles['support_server'];
 
-            $patreon_role_id = config('services.techscode.role_ids.patreon');
-            $patreon_adventurer_role_id = config('services.techscode.role_ids.patreon_adventurer');
-            $patreon_pioneer_role_id = config('services.techscode.role_ids.patreon_pioneer');
-            $patreon_coding_wizard_role_id = config('services.techscode.role_ids.patreon_coding_wizard');
-
-            if(
-                in_array($patreon_role_id, $support_server_roles) &&
-                (
-                    in_array($patreon_adventurer_role_id, $support_server_roles) ||
-                    in_array($patreon_pioneer_role_id, $support_server_roles) ||
-                    in_array($patreon_coding_wizard_role_id, $support_server_roles)
-                )
-            ){
-                $update_request->has_beta_access = true;
-            }else{
-                $update_request->has_beta_access = false;
-            }
+            $has_admin_access = $this->hasAdminAccess($support_server_roles);
+            $update_request->has_beta_access = $this->hasBetaAccess($support_server_roles);
 
             $allowed_plugins = $this->getAllowedPlugins($support_server_roles);
-            if (empty($allowed_plugins)){
+            if (empty($allowed_plugins) && !$has_admin_access){
                 $update_request->status = UpdateRequestStatus::UNAUTHORIZED;
                 $update_request->save();
                 return view('pages.error')
@@ -92,7 +77,7 @@ class AuthenticateController extends Controller
                         'show_join_button' => true
                     ]);
             }
-            if(!in_array($update_request->plugin_name, $allowed_plugins)){
+            if(!in_array($update_request->plugin_name, $allowed_plugins) && !$has_admin_access){
                 $update_request->status = UpdateRequestStatus::UNAUTHORIZED;
                 $update_request->save();
                 return view('pages.error')
@@ -100,6 +85,11 @@ class AuthenticateController extends Controller
                         'error_message' => 'You do not have access to any plugins.<br>Please verify your roles on the support server.',
                         'show_join_button' => true
                     ]);
+            }
+
+            if ($has_admin_access){
+                $update_request->has_beta_access = true;
+                $allowed_plugins = TechsCodePlugin::getValidPluginKeys();
             }
 
             $update_request->allowed_plugins = implode(',', $allowed_plugins);
@@ -119,7 +109,8 @@ class AuthenticateController extends Controller
         }
     }
 
-    private function getAllowedPlugins(array $user_roles){
+    private function getAllowedPlugins(array $user_roles): array
+    {
         $allowed_plugins = [];
 
         $verified_role_id = config('services.techscode.role_ids.verified');
@@ -137,6 +128,46 @@ class AuthenticateController extends Controller
         }
 
         return $allowed_plugins;
+    }
+
+    public function hasBetaAccess(array $user_roles): bool
+    {
+        $patreon_role_id = config('services.techscode.role_ids.patreon');
+        $patreon_adventurer_role_id = config('services.techscode.role_ids.patreon_adventurer');
+        $patreon_pioneer_role_id = config('services.techscode.role_ids.patreon_pioneer');
+        $patreon_coding_wizard_role_id = config('services.techscode.role_ids.patreon_coding_wizard');
+
+        if(
+            in_array($patreon_role_id, $user_roles) &&
+            (
+                in_array($patreon_adventurer_role_id, $user_roles) ||
+                in_array($patreon_pioneer_role_id, $user_roles) ||
+                in_array($patreon_coding_wizard_role_id, $user_roles)
+            )
+        ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function hasAdminAccess(array $user_roles): bool
+    {
+        $support_role_id = config('services.techscode.role_ids.support');
+        $development_role_id = config('services.techscode.role_ids.development');
+        $leadership_role_id = config('services.techscode.role_ids.leadership');
+        $marketing_role_id = config('services.techscode.role_ids.marketing');
+
+        if(
+            in_array($support_role_id, $user_roles) ||
+            in_array($development_role_id, $user_roles) ||
+            in_array($leadership_role_id, $user_roles) ||
+            in_array($marketing_role_id, $user_roles)
+        ){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

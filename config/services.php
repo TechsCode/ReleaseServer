@@ -50,6 +50,10 @@ return [
             'patreon_adventurer' => '1089858831451951144',
             'patreon_pioneer' => '1089858895998091295',
             'patreon_coding_wizard' => '1089858921281359962',
+            'support' => '1035905910511509585',
+            'development' => '1035906012068200559',
+            'leadership' => '1099678963778981968',
+            'marketing' => '1035906095895556157',
 
             'ultrapermissions' => '416194311080771596',
             'ultraeconomy' => '749034791936196649',

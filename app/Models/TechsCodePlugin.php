@@ -46,4 +46,9 @@ class TechsCodePlugin
         return self::$valid_plugins[$this->value];
     }
 
+    public static function getValidPluginKeys(): array
+    {
+        return array_keys(self::$valid_plugins);
+    }
+
 }
