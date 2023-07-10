@@ -8,7 +8,7 @@ enum UpdateRequestStatus: string
     case WAITING_AUTHENTICATION = 'waiting_authentication';
     case UNAUTHORIZED = 'unauthorized';
     case AUTHORIZED = 'authorized';
-    case UPDATED = 'updated';
+    case DOWNLOADED = 'downloaded';
 
     public static function all(): array
     {
@@ -16,7 +16,7 @@ enum UpdateRequestStatus: string
             self::WAITING_AUTHENTICATION,
             self::UNAUTHORIZED,
             self::AUTHORIZED,
-            self::UPDATED,
+            self::DOWNLOADED,
         ];
     }
 

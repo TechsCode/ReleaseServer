@@ -308,7 +308,7 @@ class ApiController extends Controller
             ], 404);
         }
 
-        if($update_request->status === UpdateRequestStatus::UPDATED){
+        if($update_request->status === UpdateRequestStatus::DOWNLOADED){
             return response()->json([
                 'status' => 'error',
                 'code' => 403,
@@ -443,7 +443,7 @@ class ApiController extends Controller
             ], 404);
         }
 
-        if($update_request->status === UpdateRequestStatus::UPDATED){
+        if($update_request->status === UpdateRequestStatus::DOWNLOADED){
             return response()->json([
                 'status' => 'error',
                 'code' => 403,
@@ -484,7 +484,7 @@ class ApiController extends Controller
 
         $filename = $mavenDownloader->download();
         if ($filename){
-            $update_request->status = UpdateRequestStatus::UPDATED;
+            $update_request->status = UpdateRequestStatus::DOWNLOADED;
             $update_request->save();
 
             $file = \Storage::drive('plugins')->path($filename);

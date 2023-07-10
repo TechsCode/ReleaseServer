@@ -59,7 +59,7 @@ class HomeController extends Controller
 
         if (
             $update_request->status === UpdateRequestStatus::AUTHORIZED ||
-            $update_request->status === UpdateRequestStatus::UPDATED
+            $update_request->status === UpdateRequestStatus::DOWNLOADED
         ){
             return view('pages.authorize')
                 ->with([
