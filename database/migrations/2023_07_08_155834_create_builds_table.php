@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('plugin_name');
             $table->string('plugin_version');
-            $table->string('build_number');
+            $table->integer('build_number');
             $table->string('description')->nullable();
             $table->timestamps();
         });

@@ -152,12 +152,67 @@ class ApiController extends Controller
     }
 
     public function onGetPlugins(){
+        $update_token = request()->input('update_token');
 
+        if (empty($update_token)){
+            return response()->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Missing required parameters. update_token is required.'
+            ], 400);
+        }
+
+        /** @var UpdateRequest $update_request */
+        $update_request = UpdateRequest::query()
+            ->where('update_token', $update_token)
+            ->first();
+        if (!$update_request){
+            return response()->json([
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'Update request not found.'
+            ], 404);
+        }
+
+        $plugins = TechsCodePlugin::$valid_plugins;
+        $response = [];
+
+        foreach ($plugins as $key => $plugin){
+            $allowed_plugins = $update_request->allowed_plugins;
+            $plugins_allowed = $allowed_plugins === '*' || in_array($key, $allowed_plugins);
+
+            /** @var ReleaseVersion $versions */
+            $versions = ReleaseVersion::query()
+                ->where('plugin_name', $key)
+                ->orderBy('plugin_version', 'desc')
+                ->get();
+            $versions->makeHidden(['build', 'plugin_name', 'updated_at', 'id']);
+
+            if($update_request->has_beta_access){
+                /** @var Build $latest_build */
+                $latest_build = Build::query()
+                    ->where('plugin_name', $key)
+                    ->orderBy('build_number', 'desc')
+                    ->first()->build_number ?? 0;
+            }else{
+                $latest_build = null;
+            }
+
+            $response[$key] = [
+                'name' => $plugin,
+                'value' => $key,
+                'versions' => $versions,
+                'latest_version' => $versions->first()->plugin_version ?? '0.0.0',
+                'latest_build' => $latest_build,
+                'is_allowed' => $plugins_allowed
+            ];
+        }
 
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'message' => 'TODO: Get plugins.'
+            'message' => 'Plugins retrieved.',
+            'data' => $response
         ]);
     }
 
