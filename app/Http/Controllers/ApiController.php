@@ -246,7 +246,8 @@ class ApiController extends Controller
                 ->orderBy('plugin_version', 'desc')
                 ->first();
             if ($latest_version) {
-                $plugin_version = $latest_version->plugin_version;
+                $build_number = $latest_version->build->build_number;
+                $plugin_version = $latest_version->plugin_version."_build-".$build_number;
             }
         }else{
             $plugin_value = null;
@@ -377,7 +378,8 @@ class ApiController extends Controller
                     'message' => 'Plugin not found.'
                 ], 404);
             }
-            $update_to = $latest_release_version->plugin_version;
+            $build_number = $latest_release_version->build->build_number;
+            $update_to = $latest_release_version->plugin_version."_build-".$build_number;
         }
         else if($update_to === "latest-beta"){
             if ($update_request->has_beta_access !== true){
