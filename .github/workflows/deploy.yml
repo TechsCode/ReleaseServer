@@ -24,4 +24,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSHKEY }}
-          script: "cd /home/UpdateServer/web/update.techscode.com/public_html/ && deploy.sh"
+          script: "cd /home/UpdateServer/web/update.techscode.com/public_html/ && sh deploy.sh"
