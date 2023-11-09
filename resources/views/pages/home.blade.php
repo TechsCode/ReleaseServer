@@ -12,8 +12,8 @@
         </div>
         <div class="col-auto">
             <div class="image-stack">
-                <img src="{{ Storage::url('images/discord_browser.png') }}" alt="" class="browser-img">
-                <img src="{{ Storage::url('images/update_inventory.png') }}" alt="" class="inventory-img">
+                <img src="{{ \Illuminate\Support\Facades\Vite::asset('images/discord_browser.png') }}" alt="" class="browser-img">
+                <img src="{{ \Illuminate\Support\Facades\Vite::asset('images/update_inventory.png') }}" alt="" class="inventory-img">
             </div>
         </div>
     </div>
