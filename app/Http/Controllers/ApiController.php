@@ -13,6 +13,7 @@ use Nette\Utils\Random;
 class ApiController extends Controller
 {
     public function onNewRelease(){
+        // TODO: Change to laravel validation
         $plugin_value_raw = request()->input('plugin_name');
         $release_title = request()->input('release_title');
         $release_description = request()->input('release_description');
@@ -91,6 +92,7 @@ class ApiController extends Controller
     }
 
     public function onVersionCheck(){
+        // TODO: Change to laravel validation
         $plugin_value_raw = request()->input('plugin_name');
         $current_version = request()->input('current_version');
 
@@ -152,6 +154,7 @@ class ApiController extends Controller
     }
 
     public function onGetPlugins(){
+        // TODO: Change to laravel validation
         $update_token = request()->input('update_token');
 
         if (empty($update_token)){
@@ -217,6 +220,7 @@ class ApiController extends Controller
     }
 
     public function onRequestUpdateCreate(){
+        // TODO: Change to laravel validation
         $plugin_value_raw = request()->input('plugin_name');
         $current_version = request()->input('current_version');
 
@@ -270,6 +274,7 @@ class ApiController extends Controller
     }
 
     public function onRequestUpdateCheck(){
+        // TODO: Change to laravel validation
         $update_token = request()->input('update_token');
 
         /** @var UpdateRequest $update_request */
@@ -295,6 +300,7 @@ class ApiController extends Controller
     }
 
     public function onRequestUpdateUpdate(){
+        // TODO: Change to laravel validation
         $update_token = request()->input('update_token');
 
         /** @var UpdateRequest $update_request */
@@ -424,6 +430,7 @@ class ApiController extends Controller
     }
 
     public function onDownloadJar(){
+        // TODO: Change to laravel validation
         $update_token = request()->input('update_token');
         if (empty($update_token)){
             return response()->json([
