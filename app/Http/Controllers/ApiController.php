@@ -8,12 +8,12 @@ use App\Models\ReleaseVersion;
 use App\Models\UpdateRequest;
 use App\Models\UpdateRequestStatus;
 use App\Services\MavenDownloader;
+use Illuminate\Support\Facades\Storage;
 use Nette\Utils\Random;
 
 class ApiController extends Controller
 {
     public function onNewRelease(){
-        // TODO: Change to laravel validation
         $plugin_value_raw = request()->input('plugin_name');
         $release_title = request()->input('release_title');
         $release_description = request()->input('release_description');
@@ -92,7 +92,6 @@ class ApiController extends Controller
     }
 
     public function onVersionCheck(){
-        // TODO: Change to laravel validation
         $plugin_value_raw = request()->input('plugin_name');
         $current_version = request()->input('current_version');
 
@@ -154,7 +153,6 @@ class ApiController extends Controller
     }
 
     public function onGetPlugins(){
-        // TODO: Change to laravel validation
         $update_token = request()->input('update_token');
 
         if (empty($update_token)){
@@ -220,9 +218,16 @@ class ApiController extends Controller
     }
 
     public function onRequestUpdateCreate(){
-        // TODO: Change to laravel validation
         $plugin_value_raw = request()->input('plugin_name');
         $current_version = request()->input('current_version');
+
+        if (empty($plugin_value_raw) || empty($current_version)) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Missing required parameters. plugin_name, current_version are required'
+            ], 400);
+        }
 
         if (!empty($current_version) && !$this->isValidVersion($current_version)){
             return response()->json([
@@ -274,8 +279,15 @@ class ApiController extends Controller
     }
 
     public function onRequestUpdateCheck(){
-        // TODO: Change to laravel validation
         $update_token = request()->input('update_token');
+
+        if(empty($update_token)){
+            return response()->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Missing required parameters. update_token is required.'
+            ], 400);
+        }
 
         /** @var UpdateRequest $update_request */
         $update_request = UpdateRequest::query()
@@ -300,8 +312,15 @@ class ApiController extends Controller
     }
 
     public function onRequestUpdateUpdate(){
-        // TODO: Change to laravel validation
         $update_token = request()->input('update_token');
+
+        if (empty($update_token)){
+            return response()->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Missing required parameters. update_token is required.'
+            ], 400);
+        }
 
         /** @var UpdateRequest $update_request */
         $update_request = UpdateRequest::query()
@@ -430,7 +449,6 @@ class ApiController extends Controller
     }
 
     public function onDownloadJar(){
-        // TODO: Change to laravel validation
         $update_token = request()->input('update_token');
         if (empty($update_token)){
             return response()->json([
@@ -496,7 +514,7 @@ class ApiController extends Controller
             $update_request->status = UpdateRequestStatus::DOWNLOADED;
             $update_request->save();
 
-            $file = \Storage::drive('plugins')->path($filename);
+            $file = Storage::drive('plugins')->path($filename);
             return response()->download($file, $plugin_name.".jar");
         } else {
             return response()->json([
