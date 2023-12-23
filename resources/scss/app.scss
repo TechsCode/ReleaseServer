@@ -92,7 +92,7 @@ h1,h2,h3,h4,h5,h6,p{
         padding: 0 var(--container-padding);
         color: white;
         margin: 100px 0 200px 0;
-        min-height: calc(100vh - 80px - 392px - var(--container-padding) * 2 - 66px);
+        min-height: calc(100vh - 80px - 392px - 300px);
 
         .page-title{
             font-size: 4rem;
