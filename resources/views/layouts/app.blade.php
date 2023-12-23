@@ -12,26 +12,14 @@
     @vite('resources/scss/app.scss')
 </head>
 <body>
-    <div class="header">
-        <img src="{{ \Illuminate\Support\Facades\Vite::asset('resources/images/logo_wide.png') }}" alt="">
-    </div>
     <div class="container">
-        @yield('content')
-    </div>
-    <footer>
-        <div class="row">
-            <div class="col-auto">
-                <p>
-                    &copy; TechsCode {{ date('Y') }}
-                </p>
-            </div>
-            <div class="col-auto">
-                <p>
-                    <a href="https://techscode.com">TechsCode.com</a>
-                </p>
-            </div>
+        @include('partials.header')
+        <div class="app-content">
+            @yield('content')
         </div>
-    </footer>
+        @include('partials.footer')
+    </div>
+    @include('partials.page-blobs')
 
     @vite('resources/js/app.js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

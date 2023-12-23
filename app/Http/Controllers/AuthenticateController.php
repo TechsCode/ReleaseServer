@@ -34,7 +34,10 @@ class AuthenticateController extends Controller
         $update_token = session()->get('update_token');
         if (empty($update_token)){
             return view('pages.error')
-                ->with('error_message', 'Unknown Update Token');
+                ->with([
+                    'error_message' => 'Unknown update token',
+                    'show_join_button' => true
+                ]);
         }
         session()->forget('update_token');
 
@@ -43,14 +46,20 @@ class AuthenticateController extends Controller
             $ot_token = request()->get('token');
             if (empty($ot_token)){
                 return view('pages.error')
-                    ->with('error_message', 'Authentication Failed');
+                    ->with([
+                        'error_message' => 'Authentication failed',
+                        'show_join_button' => true
+                    ]);
             }
 
             $user_info = TechsCodeAuth::getUser($auth_token, $ot_token);
 
             if (empty($user_info)){
                 return view('pages.error')
-                    ->with('error_message', 'Authentication Failed');
+                    ->with([
+                        'error_message' => 'Authentication failed',
+                        'show_join_button' => true
+                    ]);
             }
 
             /** @var UpdateRequest $update_request */
@@ -59,7 +68,10 @@ class AuthenticateController extends Controller
                 ->first();
             if (empty($update_request)){
                 return view('pages.error')
-                    ->with('error_message', 'Update Request Not Found');
+                    ->with([
+                        'error_message' => 'Update request not found',
+                        'show_join_button' => true
+                    ]);
             }
             $user_roles = $user_info['roles'];
             $support_server_roles = $user_roles['support_server'];
@@ -82,7 +94,7 @@ class AuthenticateController extends Controller
                 $update_request->save();
                 return view('pages.error')
                     ->with([
-                        'error_message' => 'You do not have access to any plugins.<br>Please verify your roles on the support server.',
+                        'error_message' => "You do not have access to $update_request->plugin_name.<br>Please verify your roles on the support server.",
                         'show_join_button' => true
                     ]);
             }
@@ -101,11 +113,17 @@ class AuthenticateController extends Controller
         }catch (Exception $e){
             \Log::debug($e->getMessage());
             return view('pages.error')
-                ->with('error_message', 'Unknown Error');
+                ->with([
+                    'error_message' => 'Unknown Error',
+                    'show_join_button' => true
+                ]);
         } catch (GuzzleException|NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             \Log::debug($e->getMessage());
             return view('pages.error')
-                ->with('error_message', 'Unknown Error');
+                ->with([
+                    'error_message' => 'Unknown Error',
+                    'show_join_button' => true
+                ]);
         }
     }
 

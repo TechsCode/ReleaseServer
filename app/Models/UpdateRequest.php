@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 /**
  * Class UpdateRequest
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property UpdateRequestStatus $status
  * @property string $plugin_name
  * @property string $current_version
+ * @property Carbon $current_version_date
  * @property string $update_to
  * @property array $allowed_plugins
  * @property bool $has_beta_access
@@ -39,6 +41,10 @@ class UpdateRequest extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'current_version_date'
+    ];
+
     public function getStatusAttribute($value): UpdateRequestStatus
     {
         return UpdateRequestStatus::from($value);
@@ -50,6 +56,16 @@ class UpdateRequest extends Model
             return explode(',', $value);
         }
         return [];
+    }
+
+    public function getCurrentVersionDateAttribute($value){
+        $plugin_release = ReleaseVersion::where('plugin_name', $this->plugin_name)
+            ->where('plugin_version', $this->current_version)
+            ->first();
+        if($plugin_release){
+            return $plugin_release->created_at;
+        }
+        return null;
     }
 
 }

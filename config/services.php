@@ -70,4 +70,6 @@ return [
         ],
     ],
 
+    'update_server_enabled' => env('UPDATE_SERVER_ENABLED', false),
+
 ];

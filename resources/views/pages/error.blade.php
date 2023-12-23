@@ -1,21 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
-        <div class="col-auto w-100 d-flex justify-content-center">
-            <div class="updated-container">
-                <div class="icon-container x-mark">
-                    <i class="fa-regular fa-circle-xmark"></i>
-                </div>
-                <span class="updated-title">Update Failed</span>
-                <span class="updated-message text-center">{!! $error_message !!}</span>
+    <div class="auth-box-container">
 
-                @if(isset($show_join_button))
-                    <div class="btn mt-4 btn-techscode" onclick="window.location.href = `https://discord.techscode.com`">
-                        Join the Support Server
-                    </div>
-                @endif
-            </div>
+        <div class="auth-box-title">
+            TechsCode Updater
         </div>
+        @if(!config('services.update_server_enabled'))
+            <div class="error-message">
+                <div class="error-message-icon">
+                    <x-icon-circle-x />
+                </div>
+                <div class="error-message-text">
+                    <span class="title">Unavailable</span>
+                    <span class="message">The update server is currently unavailable. <br>Please try again later.</span>
+                </div>
+            </div>
+        @else
+            <div class="error-message">
+                <div class="error-message-icon">
+                    <x-icon-circle-x />
+                </div>
+                <div class="error-message-text">
+                    <span class="title">Update Failed</span>
+                    <span class="message">{!! $error_message !!}</span>
+                </div>
+            </div>
+
+            @if($show_join_button)
+                <div class="join-discord-btn">
+                    <div class="discord-button" onclick="window.location.href = `https://discord.techscode.com`">
+                        <x-icon-discord />
+                        Join our Discord
+                    </div>
+                </div>
+            @endif
+        @endif
     </div>
 @endsection

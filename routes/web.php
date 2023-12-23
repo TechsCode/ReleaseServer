@@ -22,9 +22,6 @@ Route::get('/authorize/{update_token}', [HomeController::class, 'authorizePage']
 Route::get('/authenticate/complete', [AuthenticateController::class, 'authenticateCallback'])->name('authenticate.callback');
 Route::get('/authenticate/{update_token}', [AuthenticateController::class, 'authenticatePage'])->name('authenticate');
 
-Route::get('/success', function (){
-    return view('pages.success');
-});
-Route::get('/error', function (){
-    return view('pages.error');
+Route::get('/temp', function (){
+    return view('pages.authorize');
 });

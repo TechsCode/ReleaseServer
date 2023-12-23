@@ -19,12 +19,8 @@ class HomeController extends Controller
         if (empty($update_token)) {
             return view('pages.authorize')
                 ->with([
-                    'update_token' => null,
-                    'plugin_name' => null,
-                    'current_version' => null,
-                    'update_to' => null,
-                    'show_auth_button' => false,
-                    'error_message' => 'Invalid update token.',
+                    'error_title' => 'Invalid Request',
+                    'error_message' => 'Missing update token.',
                 ]);
         }
 
@@ -35,11 +31,7 @@ class HomeController extends Controller
         if (empty($update_request)) {
             return view('pages.authorize')
                 ->with([
-                    'update_token' => null,
-                    'plugin_name' => null,
-                    'current_version' => null,
-                    'update_to' => null,
-                    'show_auth_button' => false,
+                    'error_title' => 'Invalid Request',
                     'error_message' => 'Invalid update token.',
                 ]);
         }
@@ -48,12 +40,8 @@ class HomeController extends Controller
         if (!$techscode_plugin->isValidPlugin()) {
             return view('pages.authorize')
                 ->with([
-                    'update_token' => null,
-                    'plugin_name' => null,
-                    'current_version' => null,
-                    'update_to' => null,
-                    'show_auth_button' => false,
-                    'error_message' => 'Invalid plugin name.',
+                    'error_title' => 'Update Failed',
+                    'error_message' => 'This plugin is not registered with TechsCode.',
                 ]);
         }
 
@@ -63,11 +51,7 @@ class HomeController extends Controller
         ){
             return view('pages.authorize')
                 ->with([
-                    'update_token' => null,
-                    'plugin_name' => null,
-                    'current_version' => null,
-                    'update_to' => null,
-                    'show_auth_button' => false,
+                    'error_title' => 'Update Failed',
                     'error_message' => 'This update request has already been authorized.',
                 ]);
         }
@@ -77,9 +61,8 @@ class HomeController extends Controller
                 'update_token' => $update_token,
                 'plugin_name' => $techscode_plugin->getName(),
                 'current_version' => $update_request->current_version,
+                'current_version_date' => $update_request->current_version_date,
                 'update_to' => $update_request->update_to,
-                'show_auth_button' => true,
-                'error_message' => '',
             ]);
     }
 }

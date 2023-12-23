@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiController;
 use App\Http\Middleware\GithubAuthorization;
+use App\Http\Middleware\IsUpdateServerEnabled;
 use App\Http\Middleware\PluginAuthorization;
 use Illuminate\Support\Facades\Route;
 
@@ -16,19 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => GithubAuthorization::class], function (){
-    Route::post('/new-release', [ApiController::class, 'onNewRelease']);
-});
-Route::group(['middleware' => PluginAuthorization::class], function (){
-    Route::get('/get-plugins', [ApiController::class, 'onGetPlugins']);
-    Route::group(['prefix' => 'plugin'], function () {
-        Route::get('/version-check', [ApiController::class, 'onVersionCheck']);
-        Route::group(['prefix' => 'request-update'], function () {
-            Route::post('/', [ApiController::class, 'onRequestUpdateCreate']);
-            Route::get('/', [ApiController::class, 'onRequestUpdateCheck']);
-            Route::patch('/', [ApiController::class, 'onRequestUpdateUpdate']);
+Route::group(['middleware' => IsUpdateServerEnabled::class], function (){
+    Route::group(['middleware' => GithubAuthorization::class], function (){
+        Route::post('/new-release', [ApiController::class, 'onNewRelease']);
+    });
+    Route::group(['middleware' => PluginAuthorization::class], function (){
+        Route::get('/get-plugins', [ApiController::class, 'onGetPlugins']);
+        Route::group(['prefix' => 'plugin'], function () {
+            Route::get('/version-check', [ApiController::class, 'onVersionCheck']);
+            Route::group(['prefix' => 'request-update'], function () {
+                Route::post('/', [ApiController::class, 'onRequestUpdateCreate']);
+                Route::get('/', [ApiController::class, 'onRequestUpdateCheck']);
+                Route::patch('/', [ApiController::class, 'onRequestUpdateUpdate']);
+            });
+            Route::get('/download-jar', [ApiController::class, 'onDownloadJar']);
         });
-        Route::get('/download-jar', [ApiController::class, 'onDownloadJar']);
     });
 });
 

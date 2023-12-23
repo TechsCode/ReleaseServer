@@ -5,18 +5,20 @@ namespace App\Models;
 class TechsCodePlugin
 {
     public static array $valid_plugins = [
-        "ultrapermissions" => "UltraPermissions",
-        "ultraeconomy" => "UltraEconomy",
-        "ultramotd" => "UltraMotd",
-        "ultrapunishments" => "UltraPunishments",
-        "ultraregions" => "UltraRegions",
-        "ultracustomizer" => "UltraCustomizer",
-        "ultrascoreboards" => "UltraScoreboards",
-        "insanevaults" => "InsaneVaults",
-        "insaneshops" => "InsaneShops",
-        "insaneannouncer" => "InsaneAnnouncer",
-        "techseditor" => "TechsEditor",
-        "ultraeconomytest" => "UltraEconomyTest",
+        "ultrapermissions"  => "Ultra Permissions",
+        "ultrascoreboards"  => "Ultra Scoreboards",
+        "ultrapunishments"  => "Ultra Punishments",
+        "ultracustomizer"   => "Ultra Customizer",
+        "ultraeconomy"      => "Ultra Economy",
+        "ultraregions"      => "Ultra Regions",
+        "ultramotd"         => "Ultra Motd",
+        "insaneshops"       => "Insane Shops",
+        "insanespawners"    => "Insane Spawners",
+        "insanevaults"      => "Insane Vaults",
+        "insaneannouncer"   => "Insane Announcer",
+        "insanechatcolors"  => "Insane Chat Colors",
+        "techseditor"       => "Techs Editor",
+        "ultraeconomytest"  => "Ultra Economy Test",
     ];
 
     private string $value;
