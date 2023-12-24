@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['middleware' => GithubAuthorization::class], function (){
+    Route::post('/new-release', [ApiController::class, 'onNewRelease']);
+});
+
 Route::group(['middleware' => IsUpdateServerEnabled::class], function (){
-    Route::group(['middleware' => GithubAuthorization::class], function (){
-        Route::post('/new-release', [ApiController::class, 'onNewRelease']);
-    });
     Route::group(['middleware' => PluginAuthorization::class], function (){
         Route::get('/get-plugins', [ApiController::class, 'onGetPlugins']);
         Route::group(['prefix' => 'plugin'], function () {
