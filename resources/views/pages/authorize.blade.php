@@ -2,10 +2,22 @@
 
 @section('content')
     <div class="auth-box-container">
-
         <div class="auth-box-title">
             TechsCode Updater
         </div>
+
+        <div class="auth-box-screen-to-small">
+            <div class="error-message">
+                <div class="error-message-icon">
+                    <x-icon-circle-x />
+                </div>
+                <div class="error-message-text">
+                    <span class="title">Screen Too Small</span>
+                    <span class="message">Your screen is too small to use the updater.</span>
+                </div>
+            </div>
+        </div>
+
         @if(!config('services.update_server_enabled'))
             <div class="error-message">
                 <div class="error-message-icon">

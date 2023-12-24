@@ -1,0 +1,109 @@
+.app-content{
+    width: calc(100% - var(--container-padding) * 2);
+    padding: 0 var(--container-padding);
+    color: white;
+    margin: 100px 0 200px 0;
+    min-height: calc(100vh - 80px - 392px - 300px);
+
+    .page-title{
+        font-size: 4rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .page-subtitle{
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 50px;
+    }
+
+    .image-text-container{
+        width: 100%;
+        display: flex;
+
+
+        .image-container{
+            width: 50vw;
+            aspect-ratio: 16/9;
+            border-radius: 20px;
+
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 20px;
+            }
+        }
+        .image-text{
+            width: calc(100% - 200px);
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+
+            &__title{
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+            &__subtitle{
+                font-size: 1rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px){
+    .app-content{
+        .image-text-container{
+            .image-container{
+                width: 60vw;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 805px){
+    .app-content{
+        margin: 50px 0 100px 0;
+
+        .page-title{
+            text-align: center;
+        }
+        .page-subtitle{
+            text-align: center;
+        }
+        .image-text-container{
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+
+
+            .image-container{
+                width: 50vw;
+            }
+            .image-text{
+                padding: 0;
+            }
+        }
+    }
+}
+@media screen and (max-width: 630px){
+    .app-content{
+        .image-text-container{
+            .image-container{
+                width: 80vw;
+            }
+            .image-text{
+                width: 80vw;
+            }
+        }
+    }
+}
+@media screen and (max-width: 430px){
+    .app-content{
+        .page-title{
+            font-size: 3rem;
+        }
+    }
+}

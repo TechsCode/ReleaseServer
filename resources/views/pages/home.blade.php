@@ -6,7 +6,9 @@
     <div class="page-subtitle">Effortlessly update your plugins with our Automatic Updater!</div>
 
     <div class="image-text-container">
-        <img src="https://placehold.co/1920x1080" alt="Placeholder">
+        <div class="image-container">
+            <img src="https://placehold.co/1920x1080" alt="Placeholder">
+        </div>
         <div class="image-text">
             <h2>How to use the updater?</h2>
             <p>

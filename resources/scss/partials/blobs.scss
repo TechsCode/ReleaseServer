@@ -1,0 +1,49 @@
+.page-blobs{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    z-index: 5;
+    overflow: hidden;
+    pointer-events: none;
+
+    .page-blob{
+        position: absolute;
+        filter: blur(175px);
+        aspect-ratio: 1;
+
+        &.page-blob-1{
+            background: radial-gradient(circle, rgba(0,128,255,1) 0%, rgba(0,171,255,0.5130427170868348) 58%, rgba(0,212,255,0) 100%);
+            top: -25%;
+            left: -20%;
+            width: 600px;
+            border-radius: 50%;
+            opacity: .3;
+        }
+        &.page-blob-2{
+            background: radial-gradient(circle, rgba(177,86,220,1) 0%, rgba(177,86,220,1) 58%, rgba(0,212,255,0) 100%);
+            top: 25%;
+            right: 0;
+            width: 600px;
+            border-radius: 50%;
+            opacity: .1;
+        }
+        &.page-blob-3{
+            background: radial-gradient(circle, rgba(0,128,255,1) 0%, rgba(0,171,255,0.5130427170868348) 58%, rgba(0,212,255,0) 100%);
+            bottom: 8%;
+            left: -15%;
+            width: 500px;
+            border-radius: 50%;
+            opacity: .2;
+        }
+        &.page-blob-4{
+            background: radial-gradient(circle, rgba(177,86,220,1) 0%, rgba(177,86,220,1) 58%, rgba(0,212,255,0) 100%);
+            bottom: -15%;
+            left: 10%;
+            width: 500px;
+            border-radius: 50%;
+            opacity: .2;
+        }
+    }
+}
